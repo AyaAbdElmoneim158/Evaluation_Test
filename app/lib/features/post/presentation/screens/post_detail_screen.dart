@@ -1,5 +1,5 @@
 import 'package:app/core/common/widgets/theme_toggle_btn.dart';
-import 'package:app/features/post/data/model/post.dart';
+import 'package:app/features/post/domain/entities/post.dart';
 import 'package:flutter/material.dart';
 
 class PostDetailScreen extends StatelessWidget {

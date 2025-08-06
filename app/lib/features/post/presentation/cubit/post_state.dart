@@ -1,4 +1,4 @@
-import 'package:app/features/post/data/model/post.dart';
+import 'package:app/features/post/domain/entities/post.dart';
 
 abstract class PostsState {}
 
@@ -8,10 +8,12 @@ class PostsLoading extends PostsState {}
 
 class PostsLoaded extends PostsState {
   final List<Post> posts;
+
   PostsLoaded(this.posts);
 }
 
 class PostsError extends PostsState {
   final String message;
+
   PostsError(this.message);
 }

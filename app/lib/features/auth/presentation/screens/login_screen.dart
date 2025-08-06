@@ -2,6 +2,7 @@ import 'package:app/core/common/widgets/theme_toggle_btn.dart';
 import 'package:app/core/utils/app_extension.dart';
 import 'package:app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:app/features/post/presentation/screens/posts_screen.dart';
+import 'package:app/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthCubit(),
+      create: (_) => sl<AuthCubit>(),
       child: Scaffold(
         appBar: AppBar(actions: [ThemeToggleBtn()]),
         body: Padding(
@@ -67,18 +68,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is AuthSuccess) {
-                      Navigator.pushReplacementNamed(context, PostsScreen.routeName);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        context.pushReplacementNamed(PostsScreen.routeName);
+                      });
                     } else if (state is AuthFailure) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.message)),
+                      context.pop();
+                      context.showAlertDialog(
+                        title: 'Login Failed',
+                        content: state.message,
+                        cancelText: "OK",
+                        onCancel: () {},
                       );
+                    } else if (state is AuthLoading) {
+                      context.showLoadingDialog(message: 'Logging in...');
                     }
                   },
                   builder: (context, state) {
-                    if (state is AuthLoading) {
-                      return const CircularProgressIndicator();
-                    }
-
                     return SizedBox(
                       width: double.infinity,
                       height: MediaQuery.of(context).size.height * 0.05,

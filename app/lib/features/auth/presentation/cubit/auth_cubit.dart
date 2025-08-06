@@ -1,15 +1,17 @@
-import 'package:app/core/utils/shared_pref_helper.dart';
+// lib/features/auth/presentation/cubit/auth_cubit.dart
+import 'package:app/features/auth/domain/usecases/login_usecase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(AuthInitial());
+  final LoginUseCase loginUseCase;
 
-  void login(String email, String password) async {
+  AuthCubit(this.loginUseCase) : super(AuthInitial());
+
+  Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    await Future.delayed(const Duration(seconds: 1));
-    if (email == 'Ayatest@test.com' && password == '123456') {
-      SharedPrefHelper.setString('user', email);
+    final success = await loginUseCase(email, password);
+    if (success) {
       emit(AuthSuccess());
     } else {
       emit(AuthFailure("Invalid credentials"));

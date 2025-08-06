@@ -1,5 +1,5 @@
-import 'package:app/core/common/cubit/app_cubit.dart';
-import 'package:app/core/common/cubit/app_state.dart';
+import 'package:app/core/theme/presentation/cubit/app_cubit.dart';
+import 'package:app/core/theme/presentation/cubit/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
